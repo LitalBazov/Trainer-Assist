@@ -1,0 +1,3 @@
+// router.get('/getTrainersList',authenticateUser,authorizeUser(['trainee']),getAllTrainers);
+// router.get('/getTrainerScheduleById/:id',authenticateUser,authorizeUser(['trainee']),getTrainerScheduleById);
+// router.get('/search', authenticateUser, authorizeUser(['user','admin']), searchTrainer);
