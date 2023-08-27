@@ -27,6 +27,7 @@ export default function Main() {
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/user/edit" element={<EditProfile />} />
         <Route path="watchTrainingRequest" element={<WatchTrainingRequest />} />
@@ -35,7 +36,6 @@ export default function Main() {
         <Route path="/trainer/search" element={<SpeciallityPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/users/admin/:id" element={<AdminEditPage />} />
-        <Route path="/home" element={<HomePage />} />
         <Route path="/TraineeTrainingSession" element={<TrainingSessionsTrainee />} />
         <Route path="/insert/specialty" element={<EditSpecialty />} />
       </Routes>

@@ -43,17 +43,26 @@ const seedUsers = async () => {
         profilePicture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrdxIswSXBCfbVfhAQ8jzRZDISLjNdA-S-RBlw8BsdXgUaIZGNfIOH9PDdHcH_Jx5bWqo&usqp=CAU',
       },
     ];
+    const createdUsers = await User.create(mockUsers);
+    const trainersToCreate = createdUsers.filter(user => user.role === 'trainer');
+    const trainersData = trainersToCreate.map(trainerUser => {
+      return {
+        trainer: trainerUser._id,
+        specialties: [], // Add specialties here
+      };
+    });
 
-    await User.create(mockUsers);
+    await Trainer.create(trainersData);
+
     console.log('Mockup users created successfully');
   } catch (error) {
     console.log('Error occurred while seeding Users:', error);
   }
-};
-  if(role==="trainer"){
-    await Trainer.create(mockUsers);
 
-  }
+   
+    
+};
+ 
 const seedAll = async () => {
   // Guard
   const arguments = process.argv;
