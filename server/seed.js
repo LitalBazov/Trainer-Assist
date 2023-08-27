@@ -50,7 +50,10 @@ const seedUsers = async () => {
     console.log('Error occurred while seeding Users:', error);
   }
 };
+  if(role==="trainer"){
+    await Trainer.create(mockUsers);
 
+  }
 const seedAll = async () => {
   // Guard
   const arguments = process.argv;
