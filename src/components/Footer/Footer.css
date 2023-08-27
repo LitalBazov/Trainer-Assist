@@ -1,0 +1,17 @@
+/* Footer.css */
+.Footer {
+  color: white;
+  text-align: center;
+  padding: 20px; 
+  font-size: 16px;
+  background-color: #1a1a1a;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+  font-family: 'Montserrat', sans-serif; 
+  flex-shrink: 0;
+  }
+
+  
+  

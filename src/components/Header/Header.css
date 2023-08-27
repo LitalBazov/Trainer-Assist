@@ -1,0 +1,140 @@
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #1a1a1a;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  position: relative;
+  transition: all 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.Logo img {
+  max-width: 100px;
+}
+
+.mobileMenuIcon {
+  display: none;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+}
+
+.mobileMenuIcon.open {
+  display: block;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  z-index: 2; 
+}
+
+.navLinks {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+  display: flex; 
+}
+
+.navLinks.open {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  top: 100px;
+  background-color: #1a1a1a;
+  width: 100%;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.navLinks a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+}
+
+.navLinks a:hover {
+  background-color: #2b2b2b;
+}
+
+.searchPanel {
+  display: flex;
+  align-items: center;
+}
+
+.searchPanel.open {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 15px;
+}
+
+.searchPanel input[type="text"] {
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.searchPanel button {
+  padding: 8px 15px;
+  background-color: #cf6dec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.searchPanel button:hover {
+  background-color: #ab46c2;
+}
+
+@media (max-width: 768px) {
+  .Logo {
+    position: relative;
+    z-index: 3;
+  }
+  .mobileMenuIcon {
+    display: block;
+  }
+
+  .navLinks {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #1a1a1a;
+    width: 100%;
+    border-radius: 5px;
+    z-index: 1;
+    display: none;
+  }
+
+  .navLinks.open {
+    display: flex; 
+    flex-direction: column;  }
+
+  .searchPanel {
+    display: none; 
+    margin-top: 0;
+  }
+  
+  .searchPanel.open {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 15px;
+  }
+}

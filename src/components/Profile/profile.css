@@ -1,0 +1,49 @@
+/* profile.css */
+
+.ProfileDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 500px);
+}
+
+.ProfileCard {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 400px;
+  max-width: 100%;
+  flex:1;
+  padding: 50px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+}
+
+.ProfileCard img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #cf6dec;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.ProfileCard div {
+  margin-bottom: 8px;
+}
+
+#editButton {
+  background-color: #cf6dec;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#editButton:hover {
+  background-color: #a64cb0;
+}

@@ -1,0 +1,30 @@
+
+  .Page {
+    background-color: #ebebeb;
+    padding: 40px 50px;
+    flex: 1; 
+    margin-top:0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 50px);
+
+  }
+  
+  .Page .title {
+    font-weight: 300;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-family: 'Dancing Script', cursive;
+    margin-top: 20px;
+  }
+  
+  .Page a {
+    color: #000000;
+    text-decoration: none;
+  }
+  
+  .Page a:hover {
+    border-bottom: 1px solid rgb(155, 155, 155);
+  }
+  
