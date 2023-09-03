@@ -12,7 +12,7 @@ the application is requring mongo DB. in the env file there is the mongo_uri lin
 There is a folder called uploads which holds all the users ulpoaded photo's, after running the seed there will be three pictures of the seed users.
 
 ### Overview 
-New users can sign up as trainee or trainers.
+New users can sign up as trainee or trainers.edit their own details and upload a profile picture.
 trainee's can view the trainers list within the site rate them , specify fields of specialty , see how other trainee's rated them and set up a training session with their selected trainer
 Trainers can view the trainning session requested by the trainee's allow them or dissaprove them.
 Trainer can also add or change their specialties.
