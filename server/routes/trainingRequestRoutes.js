@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
- const {insertTrainingRequest, getTraineeTrainingsList,cancelTrainingRequest
+ const {insertTrainingRequest, getTraineeTrainingsList
     ,getTraineeTrainingListByStatus,getTrainerTrainingsList,
     getTrainerTrainingListByStatus,changeStatusTrainingRequest}=require('../controllers/trainingRequestController');
 const { authenticateUser, authorizeUser } = require('../middleware/authentication');
@@ -22,10 +22,6 @@ router.get('/trainer/:id/:status', authenticateUser, authorizeUser(['trainer']),
 
     //מתאמן רוצה ליצור בקשה לאימון
 router.post('/trainee/:id',authenticateUser, authorizeUser(['user']), insertTrainingRequest);
-    //מתאמן רוצה לבטל בקשה
- router.put('/trainee/:id',authenticateUser, authorizeUser(['user']),cancelTrainingRequest);
-    //אדמין רוצה למחוק בקשה
- //router.put('/trainee/:id',authenticateUser, authorizeUser(['user']),deleteTrainingRequest);
 
     //מאמן רוצה לשנות סטטוס בקשה
     router.put('/trainer/:id', authenticateUser, authorizeUser(['trainer']),changeStatusTrainingRequest);
@@ -35,7 +31,6 @@ module.exports = router;
 
 
 
-//הפרמטר שאני נותנת אחרי הסלש הם משמשים לסינון או מיון נתונים
 
 
 

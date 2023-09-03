@@ -1,0 +1,78 @@
+/* Default styles for larger screens */
+.ProfileDetails {
+  margin: 20px auto;
+  text-align: center;
+  padding: 20px;
+  flex: 1;
+  min-height: 690px;
+}
+
+.formEdit {
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--page-color);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+.formEdit div {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.formEdit label {
+  width: 120px;
+  font-weight: bold;
+}
+
+.formEdit input,
+.formEdit span {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formEdit input:focus {
+  outline: none;
+  border-color: var(--border-table);
+}
+
+#editButton,
+#saveButton {
+  padding: 10px 20px;
+  background-color: var(--button-color);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#editButton:hover,
+#saveButton:hover {
+  background-color: var(--hoverbtn-color);
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .ProfileDetails {
+    padding: 10px;
+  }
+
+  .formEdit {
+    padding: 10px;
+  }
+
+  .formEdit label {
+    width: auto;
+  }
+
+  #editButton,
+  #saveButton {
+    padding: 8px 16px;
+  }
+}

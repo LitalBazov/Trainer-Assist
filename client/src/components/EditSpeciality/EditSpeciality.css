@@ -1,0 +1,72 @@
+/* EditSpeciality.css */
+
+.EditSpeciality {
+    margin: 0 auto;
+    padding: 20px;
+    font-family: var(--font-text);
+    background-color: var(--container-color);
+    min-height: 600px;
+
+  }
+  
+  
+  .EditSpecialityCard {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .EditSpecialityCard h2 {
+    font-size: var(--title-size);
+  }
+  
+  .EditSpecialityCard ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .EditSpecialityCard li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: var(--border-table);
+  }
+  
+  .EditSpecialityCard button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: var(--text-size);
+    margin-top: 10px;
+  }
+  
+  .EditSpecialityCard button:hover {
+    text-decoration: underline;
+  }
+  
+  .EditSpecialityCard input[type='text'] {
+    width: 100%;
+    padding: 10px;
+    border: var(--border-table);
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: var(--text-size);
+  }
+  
+  .EditSpecialityCard button[type='button'] {
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: var(--text-size);
+  }
+  
+  .EditSpecialityCard button[type='button']:hover {
+    background-color: var(--hoverbtn-color);
+  }
+  

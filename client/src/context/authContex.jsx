@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
     } catch (error) {
       console.log('handleSignOut error:', error);
-      // TODO: Handle errors (display error message to the user)
     }
   };
 
@@ -47,7 +46,6 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     } catch (error) {
       console.log('handleSignUp error:', error);
-      // TODO: Handle errors (display error message to the user)
     }
   };
 

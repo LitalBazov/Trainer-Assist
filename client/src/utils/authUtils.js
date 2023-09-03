@@ -9,5 +9,5 @@ export const loadUserDataFromCookie = async () => {
     const userData = await jwtDecode(tokenCookie);
     return { userData, isAuthenticated: false };
   }
-  return { userData: null, isAuthenticated: false };
+    return { userData: null, isAuthenticated: false };
 };

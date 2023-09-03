@@ -1,0 +1,23 @@
+/* StarRating.css */
+.star-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    
+  }
+  
+  .star {
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  .filled {
+    color: gold;
+  }
+  
+  .disabled {
+    cursor: not-allowed;
+  }
+  

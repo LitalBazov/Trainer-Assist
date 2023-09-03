@@ -5,7 +5,15 @@ const { ObjectId } = mongoose.Types;
 
 const trainerSchema = new mongoose.Schema({
     trainer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    specialties: [String], // Array of specialties
+    specialties: [String],
+    ratings: [{
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      rating: { type: Number, min: 1, max: 5 },
+    }],
+    accumulatedRating: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 0 }
+
+    
 
   });
 

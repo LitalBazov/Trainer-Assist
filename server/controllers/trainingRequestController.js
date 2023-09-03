@@ -125,46 +125,6 @@ async function insertTrainingRequest(req, res) {
 }
 
 
-//-----------------------------------------------------------------------------------------------------
-async function cancelTrainingRequest(req, res) {
-  try {
-    const requestId = req.params.id;
-    const newStatus = req.body.newStatus;
-
-    // Check if the current status is "pending" and the new status is "cancelled"
-    if (newStatus !== "cancelled") {
-      return res.status(400).json({ message: "Invalid new status." });
-    }
-
-    // Find the training request and check if the current status is "pending"
-    const existingRequest = await TrainingRequest.findById(requestId);
-    if (!existingRequest) {
-      return res.status(404).json({ message: "Training request not found." });
-    }
-
-    if (existingRequest.status !== "pending") {
-      return res.status(400).json({ message: "Cannot cancel a non-pending request." });
-    }
-
-    // Update the training request status to "cancelled"
-    const updatedRequest = await TrainingRequest.findOneAndUpdate(
-      { _id: requestId, status: "pending" }, // Ensure the request is still pending
-      { status: newStatus },
-      { new: true }
-    );
-
-    if (!updatedRequest) {
-      return res.status(404).json({ message: "Training request not found or already cancelled." });
-    }
-
-    res.status(200).json({
-      message: `Training request status has been changed to ${newStatus}.`,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
 //trainer
 //-----------------------------------------------------------------------------------------------------
 async function getTrainerTrainingsList(req, res) {
@@ -207,7 +167,7 @@ async function getTrainerTrainingListByStatus(req, res) {
 async function changeStatusTrainingRequest(req, res) {
   try {
     const requestId = req.params.id;
-    const newStatus = req.body.newStatus; // Assuming you're passing newStatus in the request body
+    const newStatus = req.body.newStatus;
     // Find and update the training request
     const updatedRequest = await TrainingRequest.findOneAndUpdate(
       { _id: requestId },
@@ -230,7 +190,6 @@ async function changeStatusTrainingRequest(req, res) {
 module.exports = {
   insertTrainingRequest,
   getTraineeTrainingsList,
-  cancelTrainingRequest,
   getTraineeTrainingListByStatus,
   getTrainerTrainingsList,
   getTrainerTrainingListByStatus,

@@ -1,8 +1,8 @@
-import './SignUpForm.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/authContex';
 import { useContext } from 'react';
+import './SignUpForm.css';
 
 export default function SignUpForm() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function SignUpForm() {
   const [phone, setPhone] = useState('');
   const [city, setCity] = useState('');
   const [role, setRole] = useState('');
-  const [profilePictureFile, setProfilePictureFile] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(`${process.env.PUBLIC_URL}/defaultprofilepic.webp`);
 
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const passwordRegex = /^(?=.*\d{4,})(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
@@ -56,8 +56,6 @@ export default function SignUpForm() {
       return;
     }
 
-    const profilePicture = profilePictureFile ? URL.createObjectURL(profilePictureFile) : './defaultprofilepic.webp';
-
     await signUp(firstname, lastname, password, age, phone, email, city, role, profilePicture);
     navigate('/home');
   };
@@ -92,14 +90,6 @@ export default function SignUpForm() {
           <option value="user">Trainee</option>
           <option value="trainer">Trainer</option>
         </select>
-
-        <label htmlFor="imageUpload">Upload an Image: </label>
-        <input type="file" id="imageUpload" name="image" accept="image/*" onChange={(e) => setProfilePictureFile(e.target.files[0])} />
-
-        {profilePictureFile && (
-          <img src={URL.createObjectURL(profilePictureFile)} alt="Profile" />
-        )}
-
         <button type='submit'>Sign Up</button>
       </form>
     </div>

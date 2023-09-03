@@ -11,8 +11,7 @@ export default function Header() {
   const tokenCookie = Cookies.get('token');
   let userData = { role: '' };
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location
-
+  const location = useLocation(); 
 
   if (tokenCookie) {
     userData = jwtDecode(tokenCookie);
@@ -20,7 +19,6 @@ export default function Header() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
   const handleSignOut = () => {
     signOut();
     navigate('/');
@@ -43,14 +41,14 @@ export default function Header() {
 
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
-      navigate(`/trainer/search?specialty=${searchQuery}`);
+      navigate(`/user/trainer/search?speciality=${searchQuery}`);
     }
   };
 
   return (
     <div className={`Header ${mobileMenuOpen ? "open" : ""}`}>
       <div className="Logo">
-        <img src="./logo.png" alt="logo" />
+        <img src="/mypics/logo.png" alt="logo" />
       </div>
   
       <div className={`mobileMenuIcon ${mobileMenuOpen ? "open" : ""}`} onClick={toggleMobileMenu}>
@@ -66,8 +64,8 @@ export default function Header() {
   
         {tokenCookie && userData.role === "trainer" ? (
           <>
-            <Link to="/watchTrainingRequest" onClick={handleClick}>Watch Training Request</Link>
-            <Link to="/insert/specialty" onClick={handleClick}>Insert Specialty</Link>
+            <Link to="/trainer/watchTrainingRequest" onClick={handleClick}>Watch Training Request</Link>
+            <Link to="/insert/speciality" onClick={handleClick}>Insert Specialty</Link>
           </>
         ) : null}
   
@@ -76,12 +74,12 @@ export default function Header() {
         )}
   
         {tokenCookie && userData.role === "user" && (
-          <Link to="/trainingRequest" onClick={handleClick}>Create Training request</Link>
+          <Link to="/user/TrainerList" onClick={handleClick}> All Trainers</Link>
         )}
 
         
         {tokenCookie && userData.role === "user" && (
-          <Link to="/TraineeTrainingSession" onClick={handleClick}>my Trainings</Link>
+          <Link to="/user/watchMyTrainings" onClick={handleClick}>my Trainings</Link>
         )}
  
         {tokenCookie ? (
@@ -89,9 +87,14 @@ export default function Header() {
         ) : (
           <Link to="/" onClick={handleClick}>Profile</Link>
         )}
+        {tokenCookie ? (
+          <Link to="/about" onClick={handleClick}>About</Link>
+        ) : (
+          <Link to="/" onClick={handleClick}>signin</Link>
+        )}
   
         {tokenCookie && (
-          <button onClick={handleSignOut}>Sign Out</button>
+         <Link to="/" onClick={handleSignOut}>Sign Out</Link>
         )}
       </nav>
   

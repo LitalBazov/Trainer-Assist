@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useContext } from "react";
 import { getAllUsers, deleteUser } from "../../services/adminService"; // Import the delete user service
-import jwtDecode from "jwt-decode";
-import { useContext } from "react";
-import { AuthContext } from "../../context/authContex";
 import { Link } from "react-router-dom";
+import { faEdit, faTrash  } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import './Admin.css'
+import { AuthContext } from '../../context/authContex';
 
-export default function AdminPage() {
+export default function Admin() {
   const [users, setUsers] = useState(null);
+  const { userData } = useContext(AuthContext);
+
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -36,57 +39,67 @@ export default function AdminPage() {
       console.error("Error deleting user:", error);
     }
   };
-  const handleUpdateUser = async () => {
-    try {
-      const response = await getAllUsers();
-      const usersArray = response.data.data;
-      const filteredUsers = usersArray.filter((user) => user.role !== "admin");
-      setUsers(filteredUsers);
-    } catch (error) {
-      console.error("Error fetching updated users:", error);
-    }
-  };
 
   return (
-    <div>
-      <h2>All Users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>City</th>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-  {users ? (
-    users.map((user) => (
-      <tr key={user._id}>
-        <td>{user._id}</td>
-        <td>{user.email}</td>
-        <td>{user.phone}</td>
-        <td>{user.city}</td>
-        <td>{user.firstName} {user.lastName}</td>
-        <td>
-          <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
-        </td>
-        <td>
-          <Link to={`/users/admin/${user._id}`}>Edit</Link>
-        </td>
-      </tr>
-    ))
+    <div className="user-management-container">
+  {userData ? (
+    <>
+      <div className="table-container">
+        <table className="user-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Age</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th colSpan="2" style={{ textAlign: 'center' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users ? (
+              users.map((user) => (
+                <tr key={user._id}>
+                  <td>{user._id}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phone}</td>
+                  <td>{user.city}</td>
+                  <td>{user.age}</td>
+                  <td>{user.firstName} {user.lastName}</td>
+                  <td>{user.role}</td>
+                  <td>
+                    <button className="delete-button" onClick={() => handleDeleteUser(user._id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </td>
+                  <td>
+                    <Link to={`/users/admin/${user._id}`} className="edit-link"> <FontAwesomeIcon icon={faEdit}/></Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7">Loading users...</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <div className="createUser">
+        <Link to="/admin/createuser">Create new User</Link>
+      </div>
+    </>
   ) : (
-    <tr>
-      <td colSpan="7">Loading users...</td>
-    </tr>
-  )}
-</tbody>
-
-        
-      </table>
+    <div className='NoToken'>
+      The connection has been disconnected. Please{' '}
+      <Link to="/">
+        <button id="signinButton">Sign in</button>
+      </Link>
     </div>
+  )}
+</div>
+
   );
-}
+      }  

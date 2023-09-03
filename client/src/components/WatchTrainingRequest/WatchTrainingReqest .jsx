@@ -1,36 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getTrainerTrainingsList, getTrainerByID, changeStatusTrainingRequest, getTrainerTrainingListByStatus } from '../../services/TrainingRequestService';
 import { getProfilebyID } from '../../services/profileService';
+import { AuthContext } from '../../context/authContex';
 import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import jwtDecode from 'jwt-decode';
 
-export default function AllTrainers() {
-  const tokenCookie = Cookies.get('token');
-  const userData = jwtDecode(tokenCookie);
+export default function WatchTrainingReqest() {
+  const { userData } = useContext(AuthContext);
   const [training, setTraining] = useState(null);
-
   const [traineeDetailsMap, setTraineeDetailsMap] = useState({});
   const [traineeDetailsLoading, setTraineeDetailsLoading] = useState(true);
-  const [selectedStatus, setSelectedStatus] = useState(''); // Default: empty
+  const [selectedStatus, setSelectedStatus] = useState('');
 
   useEffect(() => {
-    const fetchTrainer = async () => {
-      const trainerIdpro = await getTrainerByID(userData.id);
-      const trainerIdz = trainerIdpro.data.trainer._id;
-      const response = await getTrainerTrainingsList(trainerIdz);
-      const trainersArray = response.data.data;
-      setTraining(trainersArray);
+    const fetchTrainerTrainings = async () => {
+      try {
+        if (userData && userData.id) {
+          const trainerIdpro = await getTrainerByID(userData.id);
+          const trainerIdz = trainerIdpro.data.trainer._id;
+          const response = await getTrainerTrainingsList(trainerIdz);
+          const trainersArray = response.data.data;
+          setTraining(trainersArray);
+        }
+      } catch (error) {
+        console.error('Error fetching trainer trainings:', error);
+      }
     };
 
-    fetchTrainer();
-  }, []);
+    fetchTrainerTrainings();
+  }, [userData]);
 
   useEffect(() => {
     const fetchTraineeDetails = async (traineeId) => {
       try {
         const response = await getProfilebyID(traineeId);
-        const traineeDetails = response.data; // Assuming your API response contains the trainee's details
+        const traineeDetails = response.data; 
         setTraineeDetailsMap((prevMap) => ({
           ...prevMap,
           [traineeId]: traineeDetails,
@@ -64,7 +67,6 @@ export default function AllTrainers() {
     const minutes = dateObject.getMinutes().toString().padStart(2, '0');
     return `${day}/${month}/${year} ${hours - 3}:${minutes}`;
   };
-  
   const handleStatusChange = async (trainingId, newStatus) => {
     try {
       await changeStatusTrainingRequest(trainingId, newStatus);
@@ -80,99 +82,124 @@ export default function AllTrainers() {
   };
   
   const handleStatusSelect = async (event) => {
-    const selectedStatus = event.target.value;
-    setSelectedStatus(selectedStatus);
-  
-    const trainerIdpro = await getTrainerByID(userData.id);
-    const trainerIdz = trainerIdpro.data.trainer._id;
-  
-    if (selectedStatus === '') {
-      const response = await getTrainerTrainingsList(trainerIdz);
-      const trainersArray = response.data.data;
-      setTraining(trainersArray);
-    } else {
-      try {
-        const response = await getTrainerTrainingListByStatus(trainerIdz, selectedStatus);  
-        console.log(response.data)
-        if (response.data.length === 0) {
-          // Handle the case where no training requests were found
-          setTraining([]);
-        } else {
-          const filteredTraining = response.data;
-          setTraining(filteredTraining);
-        }
-      } catch (error) {
-        console.error('Error fetching training data by status:', error);
-      }
-    }
+    const newSelectedStatus = event.target.value;
+    setSelectedStatus(newSelectedStatus);
   };
   
+  useEffect(() => {
+    const fetchData = async () => {
+      if (userData && userData.id) {
+        try {
+          const trainerIdpro = await getTrainerByID(userData.id);
+          const trainerIdz = trainerIdpro.data.trainer._id;
   
+          if (selectedStatus === '') {
+            const response = await getTrainerTrainingsList(trainerIdz);
+            const trainersArray = response.data.data;
+            setTraining(trainersArray);
+          } else {
+            try {
+              const response = await getTrainerTrainingListByStatus(trainerIdz, selectedStatus);
+              if (response.data.length === 0) {
+                // Handle the case where no training requests were found
+                setTraining([]);
+              } else {
+                const filteredTraining = response.data;
+                setTraining(filteredTraining);
+              }
+            } catch (error) {
+              console.error('Error fetching training data by status:', error);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching trainer ID:', error);
+        }
+      }
+    };
+  
+    fetchData(); // Call the asynchronous function immediately
+  }, [selectedStatus, userData]);
   
 
   return (
-    <div className='AllTrainers'>
-      <div className='status-filter'>
-        <label htmlFor='status'>Select Status:</label>
-        <select id='status' value={selectedStatus} onChange={handleStatusSelect}>
-          <option value=''>All</option>
-          <option value='approved'>Approved</option>
-          <option value='disapproved'>Disapproved</option>
-          <option value='pending'>Pending</option>
-        </select>
-      </div>
-      {traineeDetailsLoading ? (
-        <div>Loading profile data, Please wait...</div>
+    <div className='container mt-4'>
+      {!userData ? (
+        <div className='alert alert-danger'>
+          The connection has been disconnected. Please{' '}
+          <Link to="/">
+            <button className="btn btn-primary">Sign in</button>
+          </Link>
+        </div>
       ) : (
-        <div>
-          {training && Array.isArray(training) ? (
-            training.length === 0 ? (
-              <div>No training requests found</div>
-            ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Trainee</th>
-                    <th>Date and Time</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {training.map((train) => {
-                    const traineeDetails = traineeDetailsMap[train.trainee];
-                    if (!traineeDetails) {
-                      return null; // Skip rendering until trainee details are fetched
-                    }
-                    return (
-                      <tr key={train._id}>
-                        <td>
-                          {`${traineeDetails.data.firstName} ${traineeDetails.data.lastName}`}
-                        </td>
-                        <td>{formatDateTime(train.dateTime)}</td>
-                        <td>{train.status}</td>
-                        <td>
-                          <button onClick={() => handleStatusChange(train._id, 'approved')}>
-                            Approve
-                          </button>
-                          <button onClick={() => handleStatusChange(train._id, 'disapproved')}>
-                            Disapprove
-                          </button>
-                          <button onClick={() => handleStatusChange(train._id, 'pending')}>
-                            Pending
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )
+        <div className='card p-4'>
+          <div className='mb-4'>
+            <label htmlFor='status'>Select Status:</label>
+            <select
+              className='form-control'
+              id='status'
+              value={selectedStatus}
+              onChange={handleStatusSelect}
+            >
+              <option value=''>All</option>
+              <option value='approved'>Approved</option>
+              <option value='disapproved'>Disapproved</option>
+              <option value='pending'>Pending</option>
+            </select>
+          </div>
+          {traineeDetailsLoading ? (
+            <div>Loading profile data, Please wait...</div>
           ) : (
-            <div>Loading training data...</div>
+            <div>
+              {training && Array.isArray(training) ? (
+                training.length === 0 ? (
+                  <div>No training requests found</div>
+                ) : (
+                  <table className='table table-striped'>
+                    <thead>
+                      <tr>
+                        <th>Trainee</th>
+                        <th>Date and Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {training.map(train => {
+                        const traineeDetails = traineeDetailsMap[train.trainee];
+                        if (!traineeDetails) {
+                          return null; // Skip rendering until trainee details are fetched
+                        }
+                        return (
+                          <tr key={train._id}>
+                            <td>
+                              {`${traineeDetails.data.firstName} ${traineeDetails.data.lastName}`}
+                            </td>
+                            <td>{formatDateTime(train.dateTime)}</td>
+                            <td>{train.status}</td>
+                            <td>
+                              <button className='btn btn-success' onClick={() => handleStatusChange(train._id, 'approved')}>
+                                Approve
+                              </button>
+                              <button className='btn btn-danger' onClick={() => handleStatusChange(train._id, 'disapproved')}>
+                                Disapprove
+                              </button>
+                              <button className='btn btn-warning' onClick={() => handleStatusChange(train._id, 'pending')}>
+                                Pending
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )
+              ) : (
+                <div>Loading training data...</div>
+              )}
+            </div>
           )}
         </div>
       )}
     </div>
   );
-          }  
+}

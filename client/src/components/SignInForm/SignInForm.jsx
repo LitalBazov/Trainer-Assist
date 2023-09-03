@@ -1,52 +1,44 @@
-import "./SignInForm.css";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/authContex";
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./SignInForm.css";
 
 export default function SignInForm() {
-  const navigate = useNavigate();
-  const { signIn } = useContext(AuthContext);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-
-  const handleSubmit = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
+
     try {
       await signIn(email, password);
-      console.log("Authentication successful");
+      console.log("User signed in");
       navigate("/home");
     } catch (error) {
-      console.log('handleSignIn error:', error.response.status);
-  
-      if (error.response && error.response.data && error.response.data.message) {
-        const errorMessage = error.response.data.message;
-  
-        // Check if the error message indicates invalid credentials
-        if (errorMessage === 'Invalid email or password') {
-          setError('Invalid email or password');
-        } else {
-          alert(errorMessage);
-        }
+      console.error("Error signing in:", error);
+      if (error.response && error.response.status === 401) {
+        // Handle invalid email or password error
+        alert("Invalid email or password");
+      } else if (error.response && error.response.status === 500) {
+        console.log("Server error");
+        // Handle server error, show an appropriate message to the user
       } else {
-        // Default error handling in case the structure of the error response is different
-        alert('Invalid email or password');
+        console.log("Unknown error");
+        // Handle other errors with a different status code
       }
-  
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
     <div className="login-container">
-      <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
-        <img src="/logosign.png" alt="logo" className="logo" />
+      <form className="login-form" onSubmit={handleSignIn}>
+        <img src="/mypics/logosign.png" alt="logo" className="logo" />
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -68,7 +60,6 @@ export default function SignInForm() {
             {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </div>
-        {error && <p className="error-message">{error}</p>}
         <div className="form-group">
           <p>Don't have an account?</p>
           <Link to="/signup" className="link">

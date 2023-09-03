@@ -1,0 +1,58 @@
+
+.ProfileDetailsAdmin{
+    margin: 20px auto;
+    text-align: center;
+    padding: 20px;
+    flex: 1; 
+    min-height:560px;
+}
+.formAdmin {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--page-color);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+  
+  .input-field {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-field label {
+    width: 120px;
+    font-weight: bold;
+  }
+  
+  .input-field input,
+  .input-field span {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-field input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+  
+  .edit-button,
+  .save-button {
+    padding: 10px 20px;
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-button:hover,
+  .save-button:hover {
+    background-color: var(--button-color-hover);
+  }
+  

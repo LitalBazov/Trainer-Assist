@@ -1,8 +1,12 @@
 
 import React, { useEffect, useState } from "react";
 import { getProfilebyID } from "../../services/profileService";
-import { Link, useLocation, useParams } from "react-router-dom"; // Use useParams
-import {editUserByAdmin} from "../../services/adminService"
+import { Link, useLocation, useParams } from "react-router-dom";
+import {editUserByAdmin} from "../../services/adminService";
+import './AdminEdit.css'
+
+
+
 export default function AdminEdit() {
   const id  = useParams();
   const location = useLocation();
@@ -10,7 +14,6 @@ export default function AdminEdit() {
   const callback = queryParams.get('callback');
 
   const userId = id.id
-  console.log(userId)
   const [profile, setProfile] = useState();
   const [email, setEmail] = useState();
   const [firstname, setFirstName] = useState();
@@ -19,8 +22,13 @@ export default function AdminEdit() {
   const [phone, setPhone] = useState();
   const [city, setCity] = useState();
   const [role, setRole] = useState();
-  const [profilePicture, setPicture] = useState(""); // Use an empty string as initial state
   const [password, setPassword] = useState("")
+
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  const phoneRegex = /^[+]?\d{8,}$/;
+  const nameRegex = /^[a-zA-Z\s]+$/;
+  const ageRegex = /^\d+$/;
+
   useEffect(() => {
     if (userId) {
       async function fetchProfile() {
@@ -29,7 +37,7 @@ export default function AdminEdit() {
           const fetchedProfile = response.data.data;
           setProfile(fetchedProfile);
           setPassword(fetchedProfile.password);
-          setFirstName(fetchedProfile.firstName); // Use fetchedProfile.firstName
+          setFirstName(fetchedProfile.firstName); 
           setLastName(fetchedProfile.lastName);
           setEmail(fetchedProfile.email);
           setAge(fetchedProfile.age);
@@ -51,7 +59,6 @@ export default function AdminEdit() {
 
   const [editableProfile, setEditableProfile] = useState({});
   const [isEditing, setIsEditing] = useState(true);
- console.log(profile)
   useEffect(() => {
     if (profile) {
       setEditableProfile(profile);
@@ -64,28 +71,70 @@ export default function AdminEdit() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    // Update the state based on the input name
-    if (name === "firstName") {
-      setFirstName(value);
-    }
-    if (name === "lastName") {
+    setEditableProfile((prevProfile) => ({
+      ...prevProfile,
+      [name]: value,
+    }));
+ 
+    // Applying regex validation for specific fields
+    if (name === 'firstName'){ 
+       if (!nameRegex.test(value)) {
+        alert('First name should contain only letters');
+      }
+       else{
+        setFirstName(value);
+       }
+      }
+  
+    if (name === 'lastName') {
+      if (!nameRegex.test(value)) {
+        alert('First name and should contain only letters');
+      }
+     else{
       setLastName(value);
+     }
     }
-    if (name === "email") {
+  
+    if (name === 'city') {
+      if (!nameRegex.test(value)) {
+        alert('City name should contain only letters, spaces, hyphens, and apostrophes');
+      }
+     else{
+      setCity(value);
+
+      }
+    }
+  
+    if (name === 'age') {
+      if (!ageRegex.test(value)){
+        alert('Age should be a positive integer greater than or equal to 16');
+      }
+      else {
+      setAge(value);
+      }
+      };
+  
+  
+    if (name === 'phone') {
+      if ( !phoneRegex.test(value)){
+        alert('Invalid phone number format');
+      }
+      else{
+      setPhone(value);
+      }
+    }
+
+    if (name === 'email') {
+      if (!emailRegex.test(value)){
+        alert('Please enter a valid email address followed by the "@" symbol, and then the domain name.');
+      }
       setEmail(value);
     }
-    if (name === "age") {
-      setAge(value);
+   
+    if (name === 'role') {
+      setRole(value)
     }
-    if (name === "phone") {
-      setPhone(value);
-    }
-    if (name === "role") {
-      setRole(value);
-    }
-    if (name === "city") {
-      setCity(value);
-    }
+
 
     setEditableProfile((prevProfile) => ({
       ...prevProfile,
@@ -93,16 +142,9 @@ export default function AdminEdit() {
     }));
   };
 
-  const handlePictureChange = (event) => {
-    const profilePictureFile = event.target.files[0];
-    setEditableProfile((prevProfile) => ({
-      ...prevProfile,
-      profilePicture: profilePictureFile,
-    }));
-  }
   const handleSaveClick =async () => {
     await editUserByAdmin(
-      userId, // Use userId here
+      userId,
       firstname,
       lastname,
       age,
@@ -110,7 +152,7 @@ export default function AdminEdit() {
       email,
       city,
       role,
-      profilePicture
+      
     );
     if (callback && window[callback] && typeof window[callback] === 'function') {
       window[callback]();
@@ -119,127 +161,114 @@ export default function AdminEdit() {
   };
 
   return (
-    <div className="ProfileDetails">
+    <div className="ProfileDetailsAdmin">
       {!profile ? (
         <div>Loading profile data, Please wait...</div>
       ) : (
         <React.Fragment>
-          <form>
-          <div>
-            <label>Name</label>
+          <form className="formAdmin">
+            <div className="input-field">
+              <label>Name</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="firstName"
+                  value={editableProfile.firstName}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <span>{profile.firstName}</span>
+              )}
+            </div>
+            <div className="input-field">
+              <label>Last Name:</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="lastName"
+                  value={editableProfile.lastName}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <span>{profile.lastName}</span>
+              )}
+            </div>
+            <div className="input-field">
+              <label>Email:</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="email"
+                  value={editableProfile.email}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <span>{profile.email}</span>
+              )}
+            </div>
+            <div className="input-field">
+              <label>Age:</label>
+              {isEditing ? (
+                <input
+                  type="number"
+                  name="age"
+                  value={editableProfile.age}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <span>{profile.age}</span>
+              )}
+            </div>
+            <div className="input-field">
+              <label>Phone:</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="phone"
+                  value={editableProfile.phone}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <span>{profile.phone}</span>
+              )}
+            </div>
+            <div className="input-field">
+              <label>Role:</label>
+              {isEditing ? (
+                 <select id="options" name="option" onChange={(e) => setRole(e.target.value)}>
+                 <option value="">Select</option>
+                 <option value="user">Trainee</option>
+                 <option value="trainer">Trainer</option>
+               </select>
+              ) : (
+                <span>{profile.role}</span>
+              )}
+            </div>
+            <div className="input-field">
+              <label>City:</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="city"
+                  value={editableProfile.city}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <span>{profile.city}</span>
+              )}
+            </div>
+            <br />
             {isEditing ? (
-              <input
-                type="text"
-                name="firstName"
-                value={editableProfile.firstName}
-                onChange={handleInputChange}
-              />
+              <Link to="/admin">
+                <button className="save-button" onClick={handleSaveClick}>
+                  Save
+                </button>
+              </Link>
             ) : (
-              <span>{profile.firstName}</span>
+              <button className="edit-button" onClick={handleEditClick}>
+                Edit
+              </button>
             )}
-          </div>
-          <div>
-            <label>Last Name:</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="lastName"
-                value={editableProfile.lastName}
-                onChange={handleInputChange}
-              />
-            ) : (
-              <span>{profile.lastName}</span>
-            )}
-          </div>
-          <div>
-            <label>Email:</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="email"
-                value={editableProfile.email}
-                onChange={handleInputChange}
-              />
-            ) : (
-              <span>{profile.email}</span>
-            )}
-          </div>
-          <div>
-            <label>Age:</label>
-            {isEditing ? (
-              <input
-                type="number"
-                name="age"
-                value={editableProfile.age}
-                onChange={handleInputChange}
-              />
-            ) : (
-              <span>{profile.age}</span>
-            )}
-          </div>
-          <div>
-            <label>Phone:</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="phone"
-                value={editableProfile.phone}
-                onChange={handleInputChange}
-              />
-            ) : (
-              <span>{profile.phone}</span>
-            )}
-          </div>
-          <div>
-            <label>Role:</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="role"
-                value={editableProfile.role}
-                onChange={handleInputChange}
-              />
-            ) : (
-              <span>{profile.role}</span>
-            )}
-          </div>
-          <div>
-            <label>City:</label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="city"
-                value={editableProfile.city}
-                onChange={handleInputChange}
-              />
-            ) : (
-              <span>{profile.city}</span>
-            )}
-          </div>
-          <div>
-            <label>Profile Picture:</label>
-            {isEditing ? (
-            <input
-            type="file"
-            name="profilePicture"
-            onChange={handlePictureChange}
-            />
-  ) : (
-    <img src={profile.profilePicture} alt="Profile" />
-  )}
-</div>
-          <br />
-          {isEditing ? (
-            <Link to="/admin">
-            <button id="saveButton" onClick={handleSaveClick}>
-              Save
-            </button>
-            </Link>
-          ) : (
-            <button id="editButton" onClick={handleEditClick}>
-              Edit
-            </button>
-          )}
           </form>
         </React.Fragment>
       )}

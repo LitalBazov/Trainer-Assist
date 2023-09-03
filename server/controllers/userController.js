@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const Trainer = require("../models/trainer");
 
-
 // Get all users (with pagination)
 const getAllUsers = async (req, res, next) => {
   try {
@@ -42,7 +41,7 @@ const getUserById= async (req, res, next) => {
 const getUserProfile= async (req, res, next) => {
   const traineeId = req.params.id
   try {
-    const user = await User.findById(req.params.id).select("-password");
+    const user = await User.findById(traineeId).select("-password");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -54,7 +53,7 @@ const getUserProfile= async (req, res, next) => {
 //----------------------------------------------------------------------------------------------
 const createUser = async (req, res, next) => {
   // Validation schema for creating a new user
-  const {firstName,lastName,password,age,phone,email,city,role,profilePicture} = req.body;
+  const {firstName,lastName,password,age,phone,email,city,role} = req.body;
 
   const userSchema = Joi.object({
     firstName: Joi.string().required(),
@@ -65,7 +64,8 @@ const createUser = async (req, res, next) => {
     email: Joi.string().email().required(),
     city: Joi.string().optional(),
     role: Joi.string().default("user").valid('admin', 'trainer', 'user'),
-    profilePicture:  Joi.string().allow('').optional().default(''),
+    profilePicture: Joi.string().allow('').optional(),
+
   });
 
   try {
@@ -82,7 +82,7 @@ const createUser = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({firstName,lastName,password:hashedPassword,age,phone,email,city,role,profilePicture});
+    const user = await User.create({firstName,lastName,password:hashedPassword,age,phone,email,city,role});
        // Create the trainer in database
        if(role==="trainer"){
         const newTrainer = await Trainer.create({trainer: user._id});
@@ -94,6 +94,8 @@ const createUser = async (req, res, next) => {
 };
 
 //----------------------------------------------------------------------------------------------
+
+
 const updateUser = async (req, res, next) => {
   // Validation schema for updating an existing user
   const userSchema = Joi.object({
@@ -104,7 +106,7 @@ const updateUser = async (req, res, next) => {
     email: Joi.string().email().required(),
     city: Joi.string().optional(),
     role: Joi.string().default("user").valid('admin', 'trainer', 'user'),
-    profilePicture: Joi.string().allow('').optional().default(''),
+
   });
 
   try {
@@ -113,11 +115,11 @@ const updateUser = async (req, res, next) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { firstName, lastName, age, phone, email, city, role, profilePicture } = req.body;
+    const { firstName, lastName, age, phone, email, city, role} = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { firstName, lastName, age, phone, email, city, role, profilePicture },
+      { firstName, lastName, age, phone, email, city, role},
       { new: true }
     ).select('-password');
 
@@ -139,10 +141,10 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-//----------------------------------------------------------------------------------------------
-  const updateUserbyuser = async (req, res, next) => {
-  const {firstName,lastName,password,age,phone,email,city,role,profilePicture} = req.body;
+//---------------------------------------------------------------------------------------------
 
+const updateUserbyuser = async (req, res, next) => {
+  const { firstName, lastName, password, age, phone, email, city, role } = req.body;
   // Validation schema for updating an existing user
   const userSchema = Joi.object({
     firstName: Joi.string().required(),
@@ -152,25 +154,26 @@ const updateUser = async (req, res, next) => {
     email: Joi.string().email().required(),
     city: Joi.string().optional(),
     role: Joi.string().default("user").valid('trainer', 'user'),
-    profilePicture: Joi.string().allow('').optional().default(''),
   });
-  
+
   const { error } = userSchema.validate(req.body);
   if (error) {
-    return res.status(400).json({ error: error.details[0].message , message:"hi" });
+    return res.status(400).json({ error: error.details[0].message });
   }
-   // Ensure valid role
-   if (["user", "trainer"].indexOf(req.body.role) === -1) {
+
+  // Ensure valid role
+  if (["user", "trainer"].indexOf(req.body.role) === -1) {
     return res.status(400).json({ error: "Invalid role" });
-  } 
+  }
+
   try {
-    let updatedUser;
-      updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {firstName,lastName,password,age,phone,email,city,role,profilePicture},
-        { new: true }
-      )
-    
+    // Find the user by ID
+    const userId = req.params.id;
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: req.body }, // Update with the request body
+      { new: true } // Return the updated user
+    );
 
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
@@ -210,5 +213,5 @@ module.exports = {
   updateUser,
   deleteUser,
   updateUserbyuser,
-  getUserProfile,
+  getUserProfile
 };

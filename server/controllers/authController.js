@@ -3,11 +3,14 @@ const Joi = require("joi");
 const User = require("../models/user");
 const Trainer = require("../models/trainer");
 
+
 const { generateToken } = require("../config/jwt");
 const { AUTH_MAX_AGE } = process.env;
 
 const signUp = async (req, res) => {
+
   const { firstName, lastName, password, age, phone, email, city, role, profilePicture } = req.body;
+
   const userSchema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
@@ -17,7 +20,8 @@ const signUp = async (req, res) => {
     email: Joi.string().email().required(),
     city: Joi.string().optional(),
     role: Joi.string().valid('user', 'trainer').required(),
-    profilePicture: Joi.string().allow('').optional().default(''),
+    profilePicture: Joi.string().allow('').optional(),
+
   });
   // Validate request body
   const { error } = userSchema.validate(req.body);
@@ -76,6 +80,7 @@ const signUp = async (req, res) => {
     
     const token = await generateToken(payload);
 
+
     
     res.cookie("token", token, {
       httpOnly: false,
@@ -90,7 +95,6 @@ const signUp = async (req, res) => {
 //----------------------------------------------------------------------------
 const signIn = async (req, res) => {
   const { email, password } = req.body;
-
   try {
     // 1. Check if user exists in db
 

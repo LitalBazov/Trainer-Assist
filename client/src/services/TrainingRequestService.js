@@ -47,7 +47,12 @@ export async function getAllTrainers() {
 
 
   export async function getTraineeTrainingsList(traineeId) {
-    const response = http.get(`/trainingRequest/trainee/${traineeId}`);
+    const response = await http.get(`/trainingRequest/trainee/${traineeId}`);
 
 return response;
+}
+
+export async function SendRating(trainerId,traineeId,rating) {
+  const response = await http.post(`/trainer/rating/${trainerId}` , { traineeId, rating });
+  return response
 }

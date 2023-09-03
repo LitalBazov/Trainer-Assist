@@ -16,31 +16,34 @@ const seedUsers = async () => {
         firstName: 'Admin',
         lastName: 'Adminson',
         email: 'admin@example.com',
-        password: await bcrypt.hash('admin123', 10),
+        city: 'Ashdod',
+        password: await bcrypt.hash('Admin1234!', 10),
         role: 'admin',
         age: Math.floor(Math.random() * 50) + 20, 
         phone: '0556584771', 
-        profilePicture: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fHww&w=1000&q=80',
+        profilePicture: 'admin.jpg',
       },
       {
         firstName: 'Trainer',
         lastName: 'Trainersson',
         email: 'trainer@example.com',
-        password: await bcrypt.hash('trainer123', 10),
+        city: 'Ashdod',
+        password: await bcrypt.hash('Trainer1234!', 10),
         role: 'trainer',
         age: Math.floor(Math.random() * 50) + 20, 
         phone: '0508529661', 
-        profilePicture: 'https://xsgames.co/randomusers/assets/avatars/male/46.jpg',
+        profilePicture: 'trainer.jpg',
       },
       {
         firstName: 'User',
         lastName: 'Userson',
         email: 'user@example.com',
+        city: 'Ashdod',
         password: await bcrypt.hash('User1234!', 10),
         role: 'user',
         age: Math.floor(Math.random() * 50) + 20, 
         phone: '0501111111', 
-        profilePicture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrdxIswSXBCfbVfhAQ8jzRZDISLjNdA-S-RBlw8BsdXgUaIZGNfIOH9PDdHcH_Jx5bWqo&usqp=CAU',
+        profilePicture: 'user.jpg',
       },
     ];
     const createdUsers = await User.create(mockUsers);
@@ -48,7 +51,7 @@ const seedUsers = async () => {
     const trainersData = trainersToCreate.map(trainerUser => {
       return {
         trainer: trainerUser._id,
-        specialties: [], // Add specialties here
+        specialties: [], 
       };
     });
 

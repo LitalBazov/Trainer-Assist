@@ -1,0 +1,60 @@
+/* GetTrainer.css */
+.AllTrainers {
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    min-height: 680px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .trainer-card {
+    background-color: var(--inpage-color);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .trainer-name {
+    font-size: var(--title-size);
+    margin-bottom: 10px;
+  }
+  
+  .trainer-specialties p {
+    margin-bottom: 5px;
+  }
+  
+  .trainer-age,
+  .trainer-phone,
+  .trainer-city
+  {
+    margin-bottom: 5px;
+  }
+  .trainer-rating {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .training-session-button {
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .training-session-button:hover {
+    background-color: var(--hover-color);
+  }
+  
+  /* Responsive behavior */
+  @media screen and (max-width: 768px) {
+    .AllTrainers {
+      padding: 10px;
+    }
+  }
+  

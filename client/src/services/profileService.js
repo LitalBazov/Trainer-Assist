@@ -1,13 +1,16 @@
 import http from "./httpService";
 
 export async function getProfilebyID(profileId) {
-    // get and return a movie by id from our server
     const response = http.get(`/users/${profileId}`);
     return response;
   }
 
 
   export const editProfile = async (profileId,firstName, lastName, age , phone , email , city , role , profilePicture) => {
+    if (role === 'admin'){
+      const response = await http.put(`/users/admin/${profileId}`, { firstName, lastName, age , phone , email , city , role , profilePicture });
+      return response.data;
+    }
     const response = await http.put(`/users/${profileId}`, { firstName, lastName, age , phone , email , city , role , profilePicture });
     return response.data;
   };
@@ -22,3 +25,7 @@ export async function getProfilebyID(profileId) {
     return response.data;
   };
   
+  export const uploadProfilePhoto = async (profileId,formData) => {
+    const response = await http.put(`/uploadphoto/user/${profileId}`, formData);
+    return response.data;
+  };

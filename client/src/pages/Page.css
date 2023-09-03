@@ -1,30 +1,47 @@
 
-  .Page {
-    background-color: #ebebeb;
-    padding: 40px 50px;
-    flex: 1; 
-    margin-top:0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 50px);
+:root {
+  --button-color: #ce77e9;
+  --hoverbtn-color: #dd99f1;
+  --text-color: black;
+  --page-color: #f0f0f0;
+  --text-size: 1rem;
+  --title-size: 2rem;
+  --container-color: #f8f8f8;
+  --font-title: 'Dancing Script', cursive;
+  --font-text: 'Montserrat', sans-serif;
+  --border-table: 2px solid #555151;
 
+}
+.Page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--page-color);
+  font-family: var(--font-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.Page .title {
+  font-weight: 300;
+  font-size: var(--title-size);
+  font-family: var(--font-title);
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+.searchMe {
+  min-height: 680px
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .Page {
+    padding: 15px;
   }
-  
-  .Page .title {
-    font-weight: 300;
-    font-size: 2rem;
-    margin-bottom: 30px;
-    font-family: 'Dancing Script', cursive;
-    margin-top: 20px;
+}
+
+@media screen and (max-width: 576px) {
+  .Page {
+    padding: 10px;
   }
-  
-  .Page a {
-    color: #000000;
-    text-decoration: none;
-  }
-  
-  .Page a:hover {
-    border-bottom: 1px solid rgb(155, 155, 155);
-  }
-  
+}

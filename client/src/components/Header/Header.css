@@ -101,6 +101,10 @@
 .searchPanel button:hover {
   background-color: #ab46c2;
 }
+.searchPanel input::placeholder {
+  font-size: 14px; 
+}
+
 
 @media (max-width: 768px) {
   .Logo {

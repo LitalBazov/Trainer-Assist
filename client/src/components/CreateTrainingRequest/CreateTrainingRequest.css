@@ -1,0 +1,63 @@
+
+.CreateTrainingRequest {
+    background-color: var(--page-color);
+    font-family: var(--font-text);
+    padding: 20px; 
+    min-height: 600px;
+  }
+  
+  .NoToken {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .CreateTrainingRequestForm {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--container-color);
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .CreateTrainingRequestForm h2 {
+    font-size: var(--text-size);
+    margin-bottom: 15px;
+  }
+  
+  .formField {
+    margin-bottom: 15px;
+  }
+  
+  .CreateTrainingRequestForm label {
+    font-weight: 600;
+    font-size: var(--text-size);
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .CreateTrainingRequestForm input,
+  .CreateTrainingRequestForm select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: var(--container-color);
+    font-size: var(--text-size);
+  }
+  
+  .CreateTrainingRequestForm button {
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: var(--text-size);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .CreateTrainingRequestForm button:hover {
+    background-color: var(--hoverbtn-color);
+  }
+  

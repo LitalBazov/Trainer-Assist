@@ -8,7 +8,7 @@ router.get('/admin/:id', authenticateUser, authorizeUser(['admin']), getUserById
 router.get('/:id', authenticateUser, authorizeUser(['user','trainer','admin']), getUserProfile);
 router.post('/admin', authenticateUser, authorizeUser(['admin']), createUser);
 router.put('/admin/:id', authenticateUser, authorizeUser(['admin']), updateUser);
-router.put('/:id', authenticateUser, authorizeUser(['user','trainer']), updateUserbyuser);
+router.put('/:id', authenticateUser, authorizeUser(['user','trainer','admin']), updateUserbyuser);
 router.delete('/admin/:id', authenticateUser, authorizeUser(['admin']), deleteUser);
 
 module.exports = router;

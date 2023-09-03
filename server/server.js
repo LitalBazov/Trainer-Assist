@@ -8,15 +8,19 @@ const morgan = require('morgan');
 const { connectDatabase } = require('./config/database');
 const { errorHandler } = require('./middleware/errorHandler');
 const { refreshAuthTokenCookie } = require('./config/jwt');
+const path = require('path');
 
 // Require routes
+const upload= require ('./upload');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const trainingRequestRoutes = require('./routes/trainingRequestRoutes');
 const trainerRoutes = require('./routes/trainerRoutes');
 
+
 // Activate express
 const app = express();
+
 
 // Use middlewares
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
@@ -32,12 +36,14 @@ connectDatabase();
 
 // Refresh auth cookie (if exists)
 app.use(refreshAuthTokenCookie);
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/trainingRequest', trainingRequestRoutes);
 app.use('/api/trainer', trainerRoutes);
+const uploadsPath = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadsPath));
+app.use('/api/uploadphoto', upload);
 
 // Error handler middleware
 app.use(errorHandler)

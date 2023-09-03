@@ -1,0 +1,33 @@
+/* UploadPhoto.css */
+.UploadPhoto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-input {
+  margin-bottom: 10px;
+}
+
+.button-container {
+  margin-bottom: 10px;
+}
+
+.upload-button {
+  padding: 10px 20px; 
+  background-color: black; 
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: var(--text-size); 
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 300px; 
+}
+
+.upload-message {
+  margin-top: 10px;
+}

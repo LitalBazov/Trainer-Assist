@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   city: { type: String, required: false, default: "" },
   role: { type: String,enum: ['admin', 'trainer', 'user'],default: "user", require: true },
-  profilePicture: { type: String, required: false, default: "" },
+  profilePicture: { type: String, required: false },
   
 });
 

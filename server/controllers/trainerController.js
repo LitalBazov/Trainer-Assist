@@ -45,6 +45,43 @@ async function insertspecialties(req, res) {
   }
   
   };
+  async function addRatingToTrainer(req, res) {
+    try {
+      const trainerId = req.params.id;
+      const  userId  = req.body.traineeId;
+      const ratingValue = req.body.rating
+      if (trainerId !== req.params.id.toString()) {
+        return res.status(403).json({ message: 'Access denied' });
+      }
+  
+      const trainer = await Trainer.findById(trainerId);
+      if (!trainer) {
+        return res.status(404).json({ message: 'Trainer not found' });
+      }
+      const existingRating = trainer.ratings.find(rating => rating.user.toString() === userId);
+      if (existingRating) {
+        return res.status(304).json({ message: 'User has already rated this trainer' });
+      }
+      // Create a new rating object
+      const newRating = {
+        user: userId,
+        rating: ratingValue,
+      };
+  
+      trainer.ratings.push(newRating);
+      // Calculate accumulatedRating
+      const totalAccumulatedRating = trainer.ratings.reduce((sum, r) => sum + r.rating, 0);
+      trainer.averageRating = totalAccumulatedRating / trainer.ratings.length;
+      trainer.accumulatedRating = totalAccumulatedRating; // Update accumulatedRating
+      await trainer.save();
+  
+      res.status(201).json({ message: 'Rating added successfully' });
+    } catch (error) {
+     // console.error(error);
+      res.status(500).json({ message: 'Failed to add rating' });
+    }
+  }
+  
   //-----------------------------------------------------------------------------------------------------
 
   async function deleteSpecialties(req, res) {
@@ -139,5 +176,4 @@ async function getAllTrainers(req, res, next) {
 }
 
 
-
-module.exports={getTrainer, insertspecialties,searchTrainerByspecialtie,getAllTrainers,deleteSpecialties};
+module.exports={getTrainer, insertspecialties,searchTrainerByspecialtie,getAllTrainers,deleteSpecialties,addRatingToTrainer };
