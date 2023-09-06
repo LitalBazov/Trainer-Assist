@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+## Application Name - Trainer assist
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Purpose
+the application is created for trainers and trainee's which allows the trainee to set training sessions from selected trainers with diffrent specializations , and the trainer can preview and manage he's training session.
 
-## Available Scripts
 
-In the project directory, you can run:
+### Usage
+in terminal run npm install to install all the dependencies which are located in the package.json file
+Run seed using npm run seed i-am-a-pro, this will generate three users holding three diffrent rules such as trainer, trainee, admin, running the seed will also add users with the trainer role to the Trainer collection no need to update that.
+afterwards run the server using npm run start , and then run the client using npm start.
+the application is requring mongo DB. in the env file there is the mongo_uri link you can change it to your own string db
+There is a folder called uploads which holds all the users ulpoaded photo's, after running the seed there will be three pictures of the seed users.
 
-### `npm start`
+### Overview 
+New users can sign up as trainee or trainers.edit their own details and upload a profile picture.
+trainee's can view the trainers list within the site rate them , specify fields of specialty , see how other trainee's rated them and set up a training session with their selected trainer
+Trainers can view the trainning session requested by the trainee's allow them or dissaprove them.
+Trainer can also add or change their specialties.
+There is also an Admin account which can monitor over all the site users , edit their details and delete them.
+All the users can upload profile photo's which are saved in uploads file.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Dependencies
+#### dotenv
+Allows you to load environment variables from a .env file.
+Used for configuring environment-specific settings.
+#### express
+A popular Node.js framework for building web applications.
+Used for creating API endpoints and handling HTTP requests.
+#### cors
+Middleware for enabling Cross-Origin Resource Sharing (CORS).
+Helps manage cross-origin requests between different domains.
+#### helmet
+A security middleware for Express.js.
+Enhances your application's security by setting various HTTP headers.
+#### cookie-parser
+Middleware for parsing cookies in HTTP requests.
+Used to handle cookies in your application.
+#### morgan
+HTTP request logger middleware.
+Provides request logging for debugging and monitoring.
+database (custom module)
+Responsible for connecting to the database.
+Replace with specific database library or tool you're using (e.g., MongoDB, MySQL, etc.).
+errorHandler (custom middleware)
+Custom error-handling middleware for handling errors in the application.
+Provides a consistent way to handle errors and return appropriate responses.
+#### jwt (custom module)
+Custom module for working with JSON Web Tokens (JWT).
+Includes functions for authentication and authorization.
+#### path
+A built-in Node.js module for handling file paths.
+Used for working with file and directory paths in your application.
